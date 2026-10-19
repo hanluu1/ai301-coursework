@@ -1,61 +1,35 @@
 # Unit 4 — Test and Submit
 
-Path: `beat-1-sandbox/unit-4/pull-request.md`
-
-Record of the pull request you opened against the Path Review repo, and of the evaluation
-runs that produced `eval-run.txt`. This file is graded at the path above; a copy kept
-anywhere else in the repository is not read.
-
-Complete every labelled field below. Each is graded on its own; content placed under the wrong
-label is not graded.
-
----
-
 ## Your pull request
 
 **Pull request**
 
-[Link to the pull request you opened. It must be the pull request's own page on the Path
-Review repo, not your fork's branch page.]
+https://github.com/codepath/pathreview-ai301-fa26-s3/pull/259
 
 **Branch**
 
-[The name of the branch the pull request comes from, exactly as it appears in your fork.
-The naming shape is a type prefix, then the issue number, then a short description. **The
-issue number in the branch name must be the number of the issue the pull request fixes** —
-a name carrying any other number does not satisfy this field.]
+fix/69-json-array-output-parser
 
 ## Eval iterations
 
-Answer all four sections. Quote source text directly; paraphrase does not satisfy these
-fields.
-
 **Run history**
 
-[The agreement score of each run you did, in order. A single run is a complete answer if
-only one run occurred. **The last score in your list must match the agreement line in the
-`eval-run.txt` you committed** — that file is the record of your final run.]
+19/20
 
 **Package analysis**
 
-[Pick one scored package (`pkg-01` through `pkg-20` — the four `calib-` packages are never
-scored). Name it by id, say what your rubric decided and what the gold label said, and
-explain why your rubric read it that way.]
+pkg-04 (category: not-tested). My rubric's `test-evidence` check graded it **accept**; the gold label is **reject**.
+
+The test-evidence section reads: "Tested locally on Windows 11 with less-Windows: colors work now in paging mode. `cargo test` passes." My check requires "at least one piece of evidence shows an observable outcome after the fix — a named behavior, a before-state and after-state, or a passing check result — tied to the issue's stated problem." I read "colors work now in paging mode" as a named behavior tied to the issue (colorless paging on Windows under pwsh), so the check passed. Gold called it not-tested and rejected, treating the brief local-test claim as insufficient — likely because it gives no before-state for comparison and the `cargo test` evidence is the `#[cfg(windows)]` unit test that only runs on Windows CI, which the package does not confirm ran.
 
 **Check rationale**
 
-[Quote one check from the `rubric.md` you uploaded to `tools/pr-precheck/`, exactly as it reads now.
-Then say why it reads that way — what you revised to get there, or what you rejected in
-favour of it.]
+Quoted from `rubric.md`:
+
+> | test-evidence | The test-evidence section or description read against the plan's stated test plan and the issue's reproduction steps; the outcome of any repo-required checks or CI suite | At least one piece of evidence shows an observable outcome after the fix — a named behavior, a before-state and after-state, or a passing check result — tied to the issue's stated problem; "tests pass" alone with no further detail does not pass | required |
+
+It reads this way because earlier drafts rejected anything that wasn't a full before/after reproduction. That was too strict: it was failing clear-accept packages whose descriptions said "feature X now works" without restating the broken state. I revised toward "at least one observable outcome tied to the issue," while keeping the explicit carve-out that bare "tests pass" claims don't satisfy it — that carve-out targets the not-tested failure family directly.
 
 **Trade-offs**
 
-[Every check gives something up. Any one of these is a complete answer: a package whose
-result it changes, a canary you re-ran with `--only`, a case you accept it will miss, or a
-stated reason nothing changed elsewhere. "Nothing changed, and here is how I know" earns
-the point in full when the reason follows.]
-
----
-
-Related paths: `eval-run.txt` in this directory; your skill's files in
-`tools/pr-precheck/`.
+The `test-evidence` check accepts a brief named-behavior claim ("colors work now in paging mode") as an observable outcome, which is what caused the pkg-04 false accept. The trade-off is intentional: tightening the check to require a before-state would have also rejected clear-accept packages whose descriptions only state the fixed behavior. I accept that pkg-04 is a miss this check will continue to produce — a PR with a one-sentence local test claim and a CI-only unit test passes the check even though the evidence is thin.
