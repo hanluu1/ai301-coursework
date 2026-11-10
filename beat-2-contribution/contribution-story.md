@@ -1,4 +1,5 @@
-# Contribution: [Issue Title]
+# Contribution: Implement Jest Tests for Button customizer #385
+
 
 Path: `beat-2-contribution/contribution-story.md`
 
@@ -8,10 +9,9 @@ format criteria grade exactly that. Your course repo link is the whole submissio
 files and no evidence uploads are part of Assignment 5.
 
 **Contribution Number:** [1]
-**Student:** [Student name]
-**GitHub Username:** [your GitHub username, exactly as it appears on your profile - no @, no
-profile URL. Your comments upstream are identified by this name.]
-**Issue:** [GitHub issue link]
+**Student:** [Han Luu]
+**GitHub Username:** [Hanluu1]
+**Issue:** [https://github.com/Bashamega/WebDevTools/issues/385]
 **Pull Request:** [GitHub PR link, once opened]
 
 One repository, built across units 5 to 8, telling the whole story of your real
@@ -55,10 +55,9 @@ happened; these entries are the toolkit's own timeline.
 All four entries are graded. Keep every heading below, and fill each
 one in the week it belongs to.
 
-**Unit 5: [one line on the tool work]**
+**Unit 5: Built a GitHub issue scout that searches, ranks, and grades first-contribution candidates automatically.**
 
-[2-4 sentences: what you built (the scout, your strategy), what broke
-or fell short, what changed because of it.]
+I built a tool that searches GitHub for beginner-friendly issues matching my skills, filters out ones that are stale or already claimed, and scores what's left against a checklist before picking one. In practice, my five targeted searches all collapsed into the broadest one — the narrower searches never added anything new after duplicates were removed. I also let through an issue that technically passed every check but was really a backend problem I said I wanted to avoid, because my checklist had no rule to catch that. Both gaps are on the list to fix before the next run.   
 
 **Unit 6: [one line on the tool work]**
 
