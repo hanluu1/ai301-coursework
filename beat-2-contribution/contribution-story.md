@@ -120,33 +120,25 @@ It fit my profile because it's frontend TypeScript work in a repo that uses the 
 ## Reproduction Process
 
 **Environment Setup**
-
-[What a stranger would need to stand this up: your operating system,
-the relevant versions (language, runtime, package manager, the project
-itself), and how you set the project up. Then the challenges you faced
-and how you solved them, or that none came up.]
+macOS 24.6.0 (Darwin), Node v22.14.0, npm (bundled with Node). Cloned the fork (hanluu1/WebDevTools-publicpr, commit 608cb71), ran npm install to install dependencies. No setup challenges — the repo's CONTRIBUTING.mddocuments the exact test commands and the __tests__/ path convention.
 
 **Steps to Reproduce**
 
-1. [Step 1]
-2. [Step 2]
-3. [Observed result]
+1. Clone the repo and run npm install                                                                                                     
+2. Run ls src/app/customizer/button/ — confirms the component exists (page.jsx)                                                           
+3. Run ls __tests__/customizer/ — confirms no button/ folder exists; run npx jest — confirms no button customizer tests run (65 tests pass across 10 suites; 2 pre-existing unrelated failures in JsonGenerator)        
 
 **Reproduction Evidence**
 
-- **Commit showing reproduction:** [link to commit in your fork]
-- **Screenshots/logs:** [if applicable]
-- **My findings:** [what you discovered during reproduction; an
-  honest, evidenced cannot-reproduce that led you to re-pick or ask
-  the maintainer belongs here and costs you nothing]
-
+- **Commit showing reproduction:** none
+- **Screenshots/logs:** ls __tests__/customizer/ → LoremIpsumGenerator  Readme-generator (no button/ folder); npx jest → Test Suites: 2 failed, 10 passed, 12 total / Tests: 65 passed, 65 total
+- **My findings:** The Button customizer component exists at src/app/customizer/button/page.jsx but __tests__/customizer/button/ does not exist. The test suite runs cleanly for other components. The gap the issue describes is confirmed on commit 608cb71.     
 **Toolkit**
-
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
-
+  
+- Tool: repro-check — graded claim-draft.md and repro-draft.md together against the live issue                                            - What it produced: reject on first run (overstatement: "Button customizer is the only component with no test folder" — the artifact didn't support it); accept on second run after the line was removed              
+- Difficulties: the rubric was designed for bug reproductions; for a task issue the "behavior shown" check needed reinterpretation (absence of tests rather than a crash artifact)                                      
+- What changed: removed the unsupported "only component" claim from the repro report; the rubric's honest-outcome check caught it correctly
+  
 ---
 
 ## Solution Approach
