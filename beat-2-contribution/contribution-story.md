@@ -8,10 +8,10 @@ the repository is not read. **Keep every section header below under its exact na
 format criteria grade exactly that. Your course repo link is the whole submission: no tool
 files and no evidence uploads are part of Assignment 5.
 
-**Contribution Number:** [1]
-**Student:** [Han Luu]
-**GitHub Username:** [Hanluu1]
-**Issue:** [https://github.com/Bashamega/WebDevTools/issues/385]
+**Contribution Number:** 1
+**Student:** Han Luu
+**GitHub Username:** Hanluu1
+**Issue:** https://github.com/Bashamega/WebDevTools/issues/385
 **Pull Request:** [GitHub PR link, once opened]
 
 One repository, built across units 5 to 8, telling the whole story of your real
@@ -59,11 +59,9 @@ one in the week it belongs to.
 
 I built a tool that searches GitHub for beginner-friendly issues matching my skills, filters out ones that are stale or already claimed, and scores what's left against a checklist before picking one. In practice, my five targeted searches all collapsed into the broadest one — the narrower searches never added anything new after duplicates were removed. I also let through an issue that technically passed every check but was really a backend problem I said I wanted to avoid, because my checklist had no rule to catch that. Both gaps are on the list to fix before the next run.   
 
-**Unit 6: [one line on the tool work]**
+**Unit 6: installed the voice-guard hook and extended the voice guide upstream.**
 
-[2-4 sentences: the voice-guard, the repo-memory file. What broke or
-fell short, and what changed because of it. "Nothing broke" counts when
-it is true - say how you know.]
+The guard caught a real mistake on the first post attempt — the claim draft said "within a week" and the guard blocked it as a timeline promise under my own rule. I revised the line and the post went through. That disagreement between repro-check (which passed it as a check-in window) and the guard (which read it as a promise) exposed a gap in how the rule is worded that I'd fix in the wrong/right pair.
 
 **Unit 7: [one line on the tool work]**
 
@@ -79,24 +77,16 @@ drafted, what you did with the draft.]
 
 ## Why I Chose This Issue
 
-[1-2 paragraphs in your own words: how you searched, what your scan
-surfaced, what your scout's verdict said, why this issue fits your
-profile, and what you hope to learn. If your scout's verdict on it
-was reject and you chose it anyway, say so here and say why; choosing
-against your own tool silently is what loses points. Close with an
-honest read of the tool itself: where the scout fell short on a real
-wild search and what you changed or would change, or what convinced
-you it held up. **Record the link to your claim comment in this section too.**
-Not claimed yet? Write `claim pending` and today's date where the link goes,
-and add the link the moment your claim lands.]
+I ran issue-scout in direct mode on Bashamega/WebDevTools#385 after finding it through the repo — a TypeScript Next.js project that matched my frontend profile. The scout graded it accept on all five required checks: maintainer active (human commits two days before the grade), repo not archived with a push the day prior, scope-feasible (one component's worth of Jest tests, not an umbrella), no assignee or linked PRs, and no AI ban in CONTRIBUTING.md. The preferred check also passed — it carries both a "good first issue" and an "Eddiehub:good-first-issue" label. Difficulty note was moderate: the issue body is a template shell and doesn't name which file holds the Button customizer, so the first step is finding and reading the component before writing any tests.
+
+It fit my profile because it's frontend TypeScript work in a repo that uses the same testing pattern across multiple components (the contributing guide even shows the exact test commands and path convention). It's not the API/state-sync debugging I said I wanted to get better at, but the testing work is bounded and the established pattern — several similar PRs merged the same week — means I'm not inventing the approach from scratch. The claim comment is live at https://github.com/Bashamega/WebDevTools/issues/385#issuecomment-6762951381. On the scout itself: the patched scope-feasible check held up better than the old newcomer-scope would have — the issue has an open edge (no file named) that the old check might have flagged as unbounded. The difficulty note did the right job there, flagging it as moderate rather than rejecting it.
 
 **Toolkit**
 
-- Tool: issue-scout (your scout: your search strategy, your rubric),
-  and how you used it
-- What it produced: [the scan and its verdict on this issue, described]
-- Difficulties: [where it fell short, or "none met" if none did]
-- What changed: [what you patched or would update, or "nothing"]
+- Tool: issue-scout — my rubric (maintainer-active, repo-in-use, scope-feasible, not-claimed, ai-policy, good-first-issue-label), wild scope, and fit profile steering toward frontend TypeScript work. Used in direct mode with a hand-picked URL.
+- What it produced: accept verdict on Bashamega/WebDevTools#385, difficulty note moderate, claim comment drafted, graded ready by repro-check, posted live.
+- Difficulties: the scope-feasible patch was needed — the old newcomer-scope check would have been too strict for this issue since the body doesn't name the file. The voice guard and repro-check also disagreed on whether "within a week" was a timeline promise; the guard won and the draft was revised before posting.
+- What changed: replaced newcomer-scope with scope-feasible in the rubric, added the difficulty note section, and tightened the upstream section of the voice guide. Would also tighten the "Don't promise timelines" wrong/right pair to explicitly carve out check-in windows from delivery promises so the guard and the rubric agree next time.
 
 ---
 
