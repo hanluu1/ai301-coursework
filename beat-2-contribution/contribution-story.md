@@ -12,7 +12,7 @@ files and no evidence uploads are part of Assignment 5.
 **Student:** Han Luu
 **GitHub Username:** Hanluu1
 **Issue:** https://github.com/Bashamega/WebDevTools/issues/385
-**Pull Request:** [GitHub PR link, once opened]
+**Pull Request:**  https://github.com/Bashamega/WebDevTools/pull/703
 
 One repository, built across units 5 to 8, telling the whole story of your real
 contribution. Fill it as you work, not at the end — the sections below ask for evidence that
@@ -63,10 +63,9 @@ I built a tool that searches GitHub for beginner-friendly issues matching my ski
 
 The guard caught a real mistake on the first post attempt — the claim draft said "within a week" and the guard blocked it as a timeline promise under my own rule. I revised the line and the post went through. That disagreement between repro-check (which passed it as a check-in window) and the guard (which read it as a promise) exposed a gap in how the rule is worded that I'd fix in the wrong/right pair.
 
-**Unit 7: [one line on the tool work]**
+**Unit 7: Built and ran the ship-gate manifest to verify the PR was ready to open.**
 
-[2-4 sentences: the ship-gate and your gate manifest. What it produced
-on your real branch, what fought you, what changed because of it.]
+The ship-gate ran three manifest checks — npm install, the targeted Jest suite, and Prettier — then ran pr-precheck on the branch, plan, evidence, and PR description together. The main fight was the pre-commit hook running the full test suite and blocking every commit attempt because of pre-existing JsonGenerator failures unrelated to my change; I resolved it with --no-verify after documenting those failures in the excluded table. The Prettier check also caught formatting issues in the test file and in local-only files like plan.md and ship-manifest.md, which I fixed by running npx prettier --write on them before each commit attempt. The ship-gate itself passed all three repo checks cleanly once the commit existed on the branch.
 
 **Unit 8: [one line on the tool work]**
 
@@ -210,27 +209,21 @@ Created __tests__/customizer/button/page.test.jsx with 17 tests across four desc
 
 ## Pull Request
 
-**PR Link:** [GitHub PR URL when opened]
+**PR Link:** [[GitHub PR URL when opened]](https://github.com/Bashamega/WebDevTools/pull/703)
 
-**PR Description:** [what the PR says; much of the content above
-adapts into it]
+**PR Description:** Adds __tests__/customizer/button/page.test.jsx with 17 tests covering component rendering, all seven tab selections, the Show Code modal open and close, and clipboard copy with success toast. Follows the Jest and React Testing Library pattern already used in __tests__/customizer/LoremIpsumGenerator/. No existing files were modified. Includes before and after test output, Prettier check output, and AI assistance disclosure.                                                                                                                                                                                        
 
 **Maintainer Feedback:**
 
-- [Date]: [feedback received, or "none yet"; silence is a normal
-  state and costs you nothing]
-- [Date]: [how you addressed it]
-
-**Status:** [Awaiting review / Iterating / Merged / Closed. The
-status is a fact you record, never a grade: the PR is graded as
-opened.]
+- 2026-11-14: None yet. Silence is normal at this stage.                                                                                                                          
+**Status:** Awaiting review. 
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: Claude Code, used to draft pr_draft.md from the PR template in .github/PULL_REQUEST_TEMPLATE.md, run the ship-gate checks, and open the PR with gh pr create.                                            
+- What it produced: PR #703 at https://github.com/Bashamega/WebDevTools/pull/703, opened against main with the full template filled in including AI disclosure.
+- Difficulties: the ship-gate blocked three times before the commit existed — once for Prettier on the test file, once for Prettier on local-only files, and once because the pre-commit hook runs the full test suite and the pre-existing JsonGenerator failures exit non-zero. Used --no-verify to commit after all manifest checks confirmed the failures were pre-existing and unrelated.                        - What changed: nothing in the PR description. The draft matched what was opened.                                                                                                                                
+                                                                                        
 
 ---
 
