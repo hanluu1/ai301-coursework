@@ -94,26 +94,28 @@ It fit my profile because it's frontend TypeScript work in a repo that uses the 
 
 **Problem Description**
 
-[In your own words, what is broken or missing?]
+The Button customizer component has no Jest tests at all. It is a fully working client component with 13 style properties, a live preview button, a seven-tab control panel, a Show Code modal with copy functionality, and a dark mode toggle, but nothing in the test suite touches any of it. The issue asks for that coverage to be added.
 
 **Expected Behavior**
 
-[What should happen?]
+A test file should exist at __tests__/customizer/button/page.test.jsx that verifies the component renders correctly, responds to user interactions like switching tabs and opening the modal, and handles clipboard copying and the success toast. The tests should pass in the local environment and in CI.
 
 **Current Behavior**
 
-[What actually happens?]
+Running npm test on the unmodified repo shows 65 tests passing across 10 suites with no button customizer tests among them. The folder __tests__/customizer/button/ does not exist. The component lives at src/app/customizer/button/page.jsx and runs fine in the app, but nothing automatically checks its behavior.
+
 
 **Affected Components**
 
-[Which parts of the codebase are involved?]
+The only file being read to understand the issue is src/app/customizer/button/page.jsx. The only file being added is __tests__/customizer/button/page.test.jsx. Nothing else in the codebase is touched.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: Claude Code, used to read src/app/customizer/button/page.jsx and the existing test files in __tests__/customizer/ to understand what the component does and what the established test pattern looks like.
+- What it produced: a clear picture of the component's structure (15 state variables, 7 tabs, Show Code modal, clipboard copy, success toast) and confirmation that the LoremIpsumGenerator tests are the right model to follow.
+- Difficulties: the issue body is a template shell and names no files, so the first real step was finding and reading the component before writing any tests. 
+- What changed: nothing in the approach. Reading the component in full before planning saved me from missing the success toast and the modal close button, which I would have overlooked if I had skimmed it.
+
 
 ---
 
@@ -145,45 +147,43 @@ macOS 24.6.0 (Darwin), Node v22.14.0, npm (bundled with Node). Cloned the fork (
 
 **Analysis**
 
-[Your analysis of the root cause: what is causing the issue, traced
-to the files and functions involved.]
+There is no bug here. The component works correctly. The gap is simply the absence of a test file. The component is a single "use client" file at src/app/customizer/button/page.jsx that holds all its logic internally through useState, renders a live preview button with inline styles, and exposes user interactions through a seven-tab control panel and a Show Code modal. Because jsdom does not include navigator.clipboard, any test that exercises the copy button will fail unless it is mocked first. The existing tests in __tests__/customizer/LoremIpsumGenerator/ already handle this exact setup, so the approach is well established in the repo.
 
 **Proposed Solution**
 
-[High-level description of your fix approach, and what you are
-deliberately NOT changing.]
-
+ I created __tests__/customizer/button/page.test.jsx following the same structure as the LoremIpsumGenerator tests. The beforeEach block mocks navigator.clipboard the same way those tests do, since jsdom does not include it. Tests are organized in four groups: that the component renders without crashing, that tab switching changes aria-selected on the clicked tab, that clicking Show Code opens the modal and clicking Close dismisses it, and that clicking Copy Code calls the clipboard API and shows the success toast. I did not change page.jsx, jest.config.js, any other component, or src/db/tools.json.
 **Implementation Plan**
 
-1. [Modify file X to do Y]
-2. [Add or change Z]
-3. [Update tests]
-
-[Record deviations here as they happen: what changed mid-build and
-why. A recorded deviation is honest work; silent drift is not.]
+1. Create __tests__/customizer/button/page.test.jsx with the clipboard mock and imports matching the existing pattern.
+2. Write a render test that checks the live preview button and all seven tabs are present.
+3. Write tab interaction tests that click each tab label and confirm aria-selected becomes "true".
+4. Write Show Code modal tests: open it, confirm the modal appears, click Close, confirm it disappears.
+5. Write a copy test: open the modal, click Copy Code, confirm navigator.clipboard.writeText was called and the success message appears.
+6. Run npm test __tests__/customizer/button to confirm the new tests pass, then run the full npm test to confirm nothing else broke.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: Claude Code and plan-check. Used Claude Code to read src/app/customizer/button/page.jsx and the LoremIpsumGenerator test file together to understand the component's structure and the repo's established test pattern. Wrote the plan draft, then ran plan-check to grade it against the issue and reproduction evidence before posting the plan comment upstream.
+- What it produced: the six-step implementation plan above, and a plan-check verdict confirming it was ready to build from.
+- Difficulties: the component is 645 lines and many state variables only affect CSS output with no visible DOM change, so deciding what was worth testing required reading carefully rather than testing everything.
+- What changed: narrowed scope away from testing every individual style slider toward the interactions a real user would perform: tab switching, the Show Code modal, and clipboard copy.
 
 ---
 
 ## Testing Strategy
 
-[What observable checks prove the fix: your reproduction steps re-run
-against the built change (before and after), and the repo's own test
-suite or checks with the outcome shown. "Tests pass" with nothing
-observable named is not a strategy.]
+Before the fix, running ls __tests__/customizer/ on the unmodified repo showed only LoremIpsumGenerator and Readme-generator with no button/ folder. Running npm test showed 65 tests passing across 10 suites, with no button customizer tests among them. That is the before state.
+
+After adding __tests__/customizer/button/page.test.jsx, running npm test -- __tests__/customizer/button shows 17 tests passing across 1 suite. Running the full npm test shows 82 tests passing across 11 suites. The same 2 pre-existing JsonGenerator failures appear, unchanged, and no new failures were introduced. Running npm run format:check passes clean with no warnings.
+
+The 17 tests cover four observable behaviors: the component renders its preview button and all seven tabs without crashing; clicking each tab changes aria-selected on that tab; clicking Show Code makes the modal appear and clicking Close makes it disappear; clicking Copy Code calls navigator.clipboard.writeText and shows the success toast. Each test was confirmed real by temporarily mutating one assertion to a wrong value, watching it fail, and reverting it.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: Claude Code, used to run the test suite and format check, and to write the results into test_evidence.md.
+- What it produced: test_evidence.md with before and after output and all three manifest check results.
+- Difficulties: the pre-commit hook runs the full test suite, so the pre-existing JsonGenerator failures blocked the commit even though my 17 tests all pass. That is a repo-wide issue documented in the ship-manifest excluded table.
+- What changed: nothing in the test file. The evidence confirmed the tests are correct as written.
 
 ---
 
@@ -192,21 +192,20 @@ observable named is not a strategy.]
 [A running log, added to as you work. Date each entry. What you
 built, decisions you made when you made them, wrong turns included.]
 
-**[Date]**
+**2026-11-12**
 
-[Entry]
+Read src/app/customizer/button/page.jsx in full and __tests__/customizer/LoremIpsumGenerator/page.test.jsx side by side to understand the component's structure and the repo's test pattern. The component has 15 state variables but most only affect CSS output with no visible DOM change, so decided to test only the interactions a real user performs: tab selection via aria-selected, the Show Code modal opening and closing, and clipboard copy with the success toast. 
 
-**[Date]**
+**2026-11-13**
 
-[Entry]
+Created __tests__/customizer/button/page.test.jsx with 17 tests across four describe blocks. All 17 passed on the first run. Ran Prettier on the test file to fix formatting. Hit a pre-commit hook blocker: the hook runs the full test suite, and the pre-existing JsonGenerator failures cause it to exit non-zero. The hook was already broken on main before my changes. Also had to format plan.md, ship-manifest.md, and CLAUDE.local.md to pass the hook's Prettier check before it reached the test step.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
-
+- Tool: Claude Code, used to read the component and existing test pattern, write and run the test file, and run the manifest checks to gather evidence.
+- What it produced: __tests__/customizer/button/page.test.jsx with 17 passing tests, confirmed real by mutation check, and test_evidence.md with the full before and after output.
+- Difficulties: the pre-commit hook runs the full suite, so the pre-existing JsonGenerator failures block the commit even though my tests pass. Had to format local-only files to get past the Prettier step of the hook.
+- What changed: nothing in the plan. The implementation matched the six steps exactly.
 ---
 
 ## Pull Request
